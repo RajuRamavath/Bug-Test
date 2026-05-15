@@ -64,7 +64,7 @@ export default async function BugDetailPage({
           </Link>
           <h1 className={styles.title}>{bug.title}</h1>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-            Reported by {bug.reporter.name || bug.reporter.email} on {bug.createdAt.toLocaleString()}
+            Reported by {bug.reporter.name || bug.reporter.email} on {bug.createdAt.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
         
@@ -97,7 +97,7 @@ export default async function BugDetailPage({
                 <div key={c.id} style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
                     <span style={{ fontWeight: 600, color: 'var(--accent-primary)' }}>{c.author.name || c.author.email}</span>
-                    <span style={{ color: 'var(--text-muted)' }}>{c.createdAt.toLocaleString()}</span>
+                    <span style={{ color: 'var(--text-muted)' }}>{c.createdAt.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
                   <div style={{ whiteSpace: 'pre-wrap' }}>{c.body}</div>
                 </div>
@@ -158,7 +158,7 @@ export default async function BugDetailPage({
                       <span style={{ fontWeight: 600 }}>{a.actor.name || a.actor.email}</span> {a.description}
                     </div>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '0.2rem' }}>
-                      {a.createdAt.toLocaleString()}
+                      {a.createdAt.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
                 </div>

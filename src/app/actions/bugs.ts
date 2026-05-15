@@ -13,6 +13,16 @@ const bugSchema = z.object({
   assigneeId: z.string().optional(),
 });
 
+function getPriorityWeight(priority: string) {
+  switch (priority) {
+    case "Low": return 1;
+    case "Medium": return 2;
+    case "High": return 3;
+    case "Critical": return 4;
+    default: return 2;
+  }
+}
+
 export async function createBug(prevState: any, formData: FormData) {
   const session = await getSession();
   if (!session) return { error: "Unauthorized" };
@@ -32,6 +42,7 @@ export async function createBug(prevState: any, formData: FormData) {
         title,
         description,
         priority,
+        priorityWeight: getPriorityWeight(priority),
         reporterId: session.userId,
         assigneeId: assigneeId || null,
       },
@@ -76,9 +87,14 @@ export async function updateBugField(bugId: string, field: "status" | "priority"
     }
   }
 
+  const updateData: any = { [field]: value };
+  if (field === "priority") {
+    updateData.priorityWeight = getPriorityWeight(value as string);
+  }
+
   await prisma.bug.update({
     where: { id: bugId },
-    data: { [field]: value },
+    data: updateData,
   });
 
   const actionMap: Record<string, string> = {

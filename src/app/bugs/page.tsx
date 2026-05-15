@@ -15,7 +15,7 @@ export default async function BugsPage({
   const priority = typeof params.priority === "string" ? params.priority : "";
   const sort = typeof params.sort === "string" ? params.sort : "updatedAt:desc";
   const page = typeof params.page === "string" ? parseInt(params.page) : 1;
-  const pageSize = 20;
+  const pageSize = 5;
 
   // Build where clause
   const where: Prisma.BugWhereInput = {};
@@ -30,7 +30,8 @@ export default async function BugsPage({
   }
 
   // Build order by
-  const [sortField, sortDir] = sort.split(":");
+  const [sortFieldRaw, sortDir] = sort.split(":");
+  const sortField = sortFieldRaw === "priority" ? "priorityWeight" : sortFieldRaw;
   const orderBy: Prisma.BugOrderByWithRelationInput = {
     [sortField]: sortDir as Prisma.SortOrder,
   };
@@ -161,7 +162,10 @@ export default async function BugsPage({
                   {bug.assignee ? bug.assignee.name || bug.assignee.email : <span style={{ color: 'var(--text-muted)' }}>Unassigned</span>}
                 </td>
                 <td className={styles.td} style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                  {bug.updatedAt.toLocaleDateString()}
+                  {bug.updatedAt.toLocaleString(undefined, { 
+                    year: 'numeric', month: 'short', day: 'numeric', 
+                    hour: '2-digit', minute: '2-digit'
+                  })}
                 </td>
               </tr>
             ))}

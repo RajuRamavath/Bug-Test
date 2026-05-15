@@ -33,6 +33,7 @@ model Bug {
   description String?
   status      String   @default("Open") // Open, In Progress, Resolved, Closed
   priority    String   @default("Medium") // Low, Medium, High, Critical
+  priorityWeight Int   @default(2) // 1=Low, 2=Medium, 3=High, 4=Critical
   
   reporterId  String
   reporter    User     @relation("Reporter", fields: [reporterId], references: [id])
